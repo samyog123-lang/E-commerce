@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from .forms import ChangePasswordForm
 from . import db
-from .models import Customer, Order  # <-- fixed
+from .models import Customer, Order  
 import os
 from datetime import datetime, timedelta
 
@@ -15,24 +15,24 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# -------------------- HOME --------------------
+
 @views.route('/')
 @login_required
 def home():
     return render_template('index.html')
 
-# -------------------- PROFILE --------------------
+
 @views.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
     form = ChangePasswordForm()
 
     if request.method == 'POST':
-        # ----------- PROFILE PICTURE -----------
+        
         if 'profile_pic' in request.files:
             file = request.files['profile_pic']
             if file and allowed_file(file.filename):
-                # Secure the filename
+               
                 filename = secure_filename(file.filename)
 
                 # Absolute path to save
@@ -42,15 +42,15 @@ def profile():
                 filepath = os.path.join(upload_folder, filename)
                 file.save(filepath)
 
-                # Update database
+               
                 current_user.profile_pic = filename
                 db.session.commit()
-                flash('✅ Profile picture updated!')
+                flash(' Profile picture updated!')
 
-        # ----------- PASSWORD CHANGE -----------
+        
         if form.validate_on_submit():
             if not current_user.verify_password(form.current_password.data):
-                flash('❌ Current password is incorrect')
+                flash(' Current password is incorrect')
                 return redirect(url_for('views.profile'))
 
             current_user.password = form.new_password.data
@@ -61,7 +61,7 @@ def profile():
     return render_template('profile.html', form=form)
 
 @views.route('/shop')
-@login_required  # optional, if you want only logged-in users
+@login_required  
 def shop():
     return render_template('shop.html',products=all_products)
 
@@ -76,7 +76,7 @@ def cart():
 
 @views.route('/add-to-cart', methods=['POST'])
 def add_to_cart():
-    # Get product from form (convert ID to int)
+    
     product = {
         "id": int(request.form.get("id")),
         "name": request.form.get("name"),
@@ -84,19 +84,19 @@ def add_to_cart():
         "image": request.form.get("image"),
     }
 
-    # Get current cart or empty list
+    
     cart = session.get('cart', [])
 
-    # Append product
+    
     cart.append(product)
 
-    # Save back to session
+    
     session['cart'] = cart
 
-    # Redirect to cart page
+    
     return redirect(url_for('views.cart'))
 
-# products.py
+
 all_products = [
     {"id": 1, "name": "Apple iPhone 14", "price": "रु99,999", "image": "https://images.unsplash.com/photo-1661447117654-5d8a2b2a0b6f"},
     {"id": 2, "name": "MacBook Pro 16", "price": "रु299,999", "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
@@ -163,10 +163,10 @@ def checkout(product_id):
         address = request.form.get('address')
         payment = request.form.get('payment')
 
-        # ---------------- KHALTI PAYMENT ----------------
+        #
         if payment.lower() == 'khalti':
 
-            # Save checkout info temporarily
+            
             session['checkout_data'] = {
                 "name": name,
                 "email": email,
@@ -183,7 +183,7 @@ def checkout(product_id):
                 f"&fail={url_for('views.khalti_fail', _external=True)}"
             )
 
-        # ---------------- COD / OFFLINE ----------------
+        
         else:
             new_order = Order(
                 user_id=current_user.id,
@@ -243,12 +243,12 @@ def khalti_success():
     db.session.add(new_order)
     db.session.commit()
 
-    flash("✅ Payment successful and order placed!")
+    flash(" Payment successful and order placed!")
     return redirect(url_for('views.order_success', order_id=new_order.id))
 @views.route('/khalti-fail')
 @login_required
 def khalti_fail():
-    flash("❌ Payment failed. Try again.")
+    flash(" Payment failed. Try again.")
     return redirect(url_for('views.cart'))
 @views.route('/order-success/<int:order_id>')
 @login_required
