@@ -3,10 +3,10 @@ from flask_login import login_required, current_user
 from datetime import datetime, timedelta
 from .models import Customer, Order
 
-# Create blueprint for admin
+
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
-@admin.route('/')  # admin dashboard route
+@admin.route('/') 
 @login_required
 def admin_dashboard():
     if current_user.email != "npanthi@gmail.com":
@@ -24,7 +24,7 @@ def admin_dashboard():
         except:
             continue
 
-    # Orders last 7 days
+
     labels = []
     orders_per_day = []
     for i in range(6,-1,-1):
