@@ -8,14 +8,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
     body {
-        /* Gradient from orange to red */
+
         background: linear-gradient(135deg, orange, red);
         color: white;
         font-family: 'Poppins', sans-serif;
     }
 
     footer {
-        background: rgba(0, 0, 0, 0.6); /* slightly transparent dark footer */
+        background: rgba(0, 0, 0, 0.6); 
     }
 
     .btn-secondary {
@@ -39,7 +39,7 @@
     <h2 class="text-center mb-5">Your Cart</h2>
 
     <div id="cartGrid" class="row g-4">
-        <!-- JS will inject cart items here -->
+
     </div>
 
     <p id="emptyCartMsg" class="text-center" style="display:none;">Your cart is empty!</p>
@@ -51,7 +51,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Pass cart items from Flask session to JS
+
     const cartItems = {{ cart_items|tojson }};
 </script>
 
