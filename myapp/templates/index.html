@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ShopMate | Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+{% include 'navbar.html' %}
+
+<!-- HERO -->
+<section class="hero d-flex align-items-center justify-content-center text-center">
+    <div class="hero-content">
+        <h1>Discover Your Perfect Style</h1>
+        <p>Premium products curated for you</p>
+        <a href="{{ url_for('views.shop') }}" class="btn btn-light btn-lg mt-3">Shop Now</a>
+
+
+    </div>
+</section>
+
+<!-- PRODUCTS -->
+<!-- PRODUCTS -->
+<section id="products" class="section">
+    <div class="container">
+        <h2 class="text-center section-title mb-3">Featured Products</h2>
+
+        <!-- SEARCH BAR -->
+        <div class="row mb-4">
+            <div class="col-md-6 offset-md-3">
+                <input type="text" id="productSearch" class="form-control" placeholder="Search for products...">
+            </div>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div class="row g-4" id="productGrid"></div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    © 2026 ShopMate • Built with Flask
+</footer>
+
+<!-- JS -->
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
